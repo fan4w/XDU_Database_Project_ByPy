@@ -80,10 +80,8 @@ def create_tables(cursor):
             violation_time DATETIME NOT NULL,
             driver_id INT,
             vehicle_id INT,
-            route_id INT,
             FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
-            FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id),
-            FOREIGN KEY (route_id) REFERENCES route(route_id)
+            FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id)
         );
     """
     cursor.execute(create_violation_table_query)
@@ -157,14 +155,13 @@ def insert_violation_info(cursor):
     violation_time = input("请输入违规时间: ")
     driver_id = input("请输入违规司机ID: ")
     vehicle_id = input("请输入违规车辆ID: ")
-    route_id = input("请输入违规路线ID: ")
 
     query = """
         INSERT INTO violation (
-            violation_id,violation_name,violation_time,driver_id,vehicle_id,route_id
+            violation_id,violation_name,violation_time,driver_id,vehicle_id
         ) 
         VALUES (
-            %s,%s,%s,%s,%s,%s
+            %s,%s,%s,%s,%s
         );
     """
 
@@ -176,8 +173,7 @@ def insert_violation_info(cursor):
                 violation_name,
                 violation_time,
                 driver_id,
-                vehicle_id,
-                route_id,
+                vehicle_id
             ),
         )
         print("违规信息录入成功！")
@@ -223,7 +219,7 @@ def serach_driver_violation_info(cursor):
         if len(result) == 0:
             print("未找到该司机的违规信息")
         for row in result:
-            format_str = "违规ID: {0}\n违规名称: {1}\n违规时间: {2}\n司机ID: {3}\n车辆ID: {4}\n路线ID: {5}"
+            format_str = "违规ID: {0}\n违规名称: {1}\n违规时间: {2}\n司机ID: {3}\n车辆ID: {4}"
             print(format_str.format(*row))
     except pymysql.Error as err:
         print(f"查询司机违规信息失败: {err}")
@@ -237,7 +233,7 @@ def serach_violation_info(cursor):
     route_id = input("请输入车队ID: ")
     query = f"""SELECT violation_name, COUNT(*)
         FROM violation JOIN driver on violation.driver_id=driver.driver_id
-        WHERE violation.route_id='{route_id}'
+        WHERE driver.route_id='{route_id}'
         GROUP BY violation.violation_name;
         """
     try:

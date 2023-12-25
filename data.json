@@ -67,17 +67,14 @@
             "violation_name": "Violation 1",
             "violation_time": "2023-12-10 10:01:00",
             "driver_id": "1",
-            "vehicle_id":"1",
-            "route_id":"1"
-
+            "vehicle_id":"1"
         },
         {
             "violation_id": "2",
             "violation_name": "Violation 2",
             "violation_time": "2023-12-10 10:01:00",
             "driver_id": "2",
-            "vehicle_id":"2",
-            "route_id":"2"
+            "vehicle_id":"2"
         }
     ]
 }
